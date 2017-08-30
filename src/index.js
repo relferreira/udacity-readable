@@ -11,9 +11,11 @@ import './index.css';
 import App from './App';
 import reducer from './reducers';
 
+console.log(process.env);
 const client = axios.create({
-  baseURL: `${process.env.API_URL}`,
-  responseType: 'json'
+  baseURL: `${process.env.REACT_APP_API_URL}`,
+  responseType: 'json',
+  headers: { Authorization: '189891JHBV123KN43' }
 });
 
 const componseEnhancers =

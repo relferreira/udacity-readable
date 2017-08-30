@@ -1,5 +1,27 @@
 import { combineReducers } from 'redux';
 
-function reducer(state, action) {}
+const initialState = {
+  categories: []
+};
 
-export default combineReducers(reducer);
+function test(state = initialState, action) {
+  switch (action.type) {
+    case 'LOAD_SUCCESS':
+      return { ...state, categories: action.payload.data.categories };
+    default:
+      return state;
+  }
+}
+
+export function testRequest() {
+  return {
+    type: 'LOAD',
+    payload: {
+      request: {
+        url: '/categories'
+      }
+    }
+  };
+}
+
+export default combineReducers({ test });
