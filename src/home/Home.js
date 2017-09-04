@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { testRequest } from './reducers';
+import { testRequest } from './actions';
 
 class Home extends Component {
   componentDidMount() {
@@ -23,7 +23,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.test
+  data: state.home
 });
 
 const mapDispatchToProps = {

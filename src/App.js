@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
-import Home from './Home';
-import Post from './Post';
+import Home from './home/Home';
+import Post from './post/Post';
 import logo from './logo.svg';
 import './App.css';
 
