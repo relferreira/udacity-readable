@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { listCategories, listPosts } from './actions';
 import { organizeValues } from '../../util/values-filter';
+import SortBy from '../../component/SortBy';
+import OrderBy from '../../component/OrderBy';
 
 export function extractCategoryFromUrl(url) {
   let matches = url.match(/\?category=(.*)/);
@@ -65,14 +67,8 @@ class Home extends Component {
           </div>
         )}
         <div className="posts">
-          <select value={sortBy} onChange={this.handleSortByChange}>
-            <option value="voteScore">Vote score</option>
-            <option value="timestamp">Date</option>
-          </select>
-          <select value={orderBy} onChange={this.handleOrderByChange}>
-            <option value="asc">Ascendent</option>
-            <option value="desc">Descendent</option>
-          </select>
+          <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
+          <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
           {filteredPost.map((post, index) => (
             <div key={index}>
               <Link to={`/posts/${post.id}`}>Title: {post.title}</Link>

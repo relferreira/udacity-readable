@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { loadPostInfo, loadComments } from './reducer';
+import SortBy from '../../component/SortBy';
+import OrderBy from '../../component/OrderBy';
+import { organizeValues } from '../../util/values-filter';
 
 class Post extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      orderBy: 'desc',
+      sortBy: 'voteScore'
+    };
+  }
   componentDidMount() {
     const { id } = this.props.match.params;
 
@@ -11,8 +21,14 @@ class Post extends Component {
     this.props.loadComments(id);
   }
 
+  handleSortByChange = event => this.setState({ sortBy: event.target.value });
+
+  handleOrderByChange = event => this.setState({ orderBy: event.target.value });
+
   render() {
     const { post, comments } = this.props.data;
+    const { sortBy, orderBy } = this.state;
+    const filteredComments = organizeValues(comments, sortBy, orderBy);
     return (
       <div>
         <h1>Post</h1>
@@ -23,7 +39,9 @@ class Post extends Component {
         <p>Score: {post.voteScore}</p>
 
         <div className="comments">
-          {comments.map((comment, index) => (
+          <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
+          <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
+          {filteredComments.map((comment, index) => (
             <div key={index}>{JSON.stringify(comment)}</div>
           ))}
         </div>
