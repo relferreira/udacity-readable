@@ -3,20 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { listCategories, listPosts } from './actions';
-
-export function organizePosts(posts, sortBy, order, selectedCategory = null) {
-  return posts
-    .filter(post => !post.deleted)
-    .filter(
-      post => (selectedCategory ? post.category === selectedCategory : post)
-    )
-    .sort(
-      (post1, post2) =>
-        order === 'asc'
-          ? post1[sortBy] - post2[sortBy]
-          : post2[sortBy] - post1[sortBy]
-    );
-}
+import { organizeValues } from '../../util/values-filter';
 
 export function extractCategoryFromUrl(url) {
   let matches = url.match(/\?category=(.*)/);
@@ -55,7 +42,7 @@ class Home extends Component {
   render() {
     const { categories, posts } = this.props.data;
     const { orderBy, sortBy, selectedCategory } = this.state;
-    const filteredPost = organizePosts(
+    const filteredPost = organizeValues(
       posts,
       sortBy,
       orderBy,
@@ -88,7 +75,7 @@ class Home extends Component {
           </select>
           {filteredPost.map((post, index) => (
             <div key={index}>
-              <p>Title: {post.title}</p>
+              <Link to={`/posts/${post.id}`}>Title: {post.title}</Link>
               <p>Category: {post.category}</p>
               <p>Author: {post.author}</p>
               <p>Date: {post.timestamp}</p>

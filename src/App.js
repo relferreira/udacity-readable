@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
-import Home from './home/Home';
-import Post from './post/Post';
+import Home from './container/home/Home';
+import Post from './container/post/Post';
 import logo from './logo.svg';
 import './App.css';
 
@@ -18,7 +18,7 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <Route exact path="/" component={Home} />
-        <Route path="/post" component={Post} />
+        <Route path="/posts/:id" component={Post} />
       </div>
     );
   }
