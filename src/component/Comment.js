@@ -14,6 +14,8 @@ class Comment extends Component {
   handleEditClick = event =>
     this.setState({ body: this.props.comment.body, editing: true });
 
+  handleDeleteClick = event => this.props.onDelete(this.props.comment.id);
+
   handleBodyChange = event => this.setState({ body: event.target.value });
 
   handleSubmit = event => {
@@ -32,6 +34,7 @@ class Comment extends Component {
           <div>
             <span>{JSON.stringify(comment)}</span>
             <button onClick={this.handleEditClick}>Edit</button>
+            <button onClick={this.handleDeleteClick}>Delete</button>
           </div>
         )}
         {editing && (
@@ -49,7 +52,8 @@ class Comment extends Component {
 
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
-  onSave: PropTypes.func.isRequired
+  onSave: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 export default Comment;

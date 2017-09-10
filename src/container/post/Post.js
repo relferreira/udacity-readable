@@ -8,7 +8,8 @@ import {
   loadComments,
   deletePost,
   createComment,
-  editComment
+  editComment,
+  deleteComment
 } from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
@@ -69,7 +70,13 @@ class Post extends Component {
     let timestamp = Date.now();
     this.props
       .editComment(id, timestamp, body)
-      .then(this.props.loadComments(this.getPostId()));
+      .then(() => this.props.loadComments(this.getPostId()));
+  };
+
+  handleCommentDelete = id => {
+    this.props
+      .deleteComment(id)
+      .then(() => this.props.loadComments(this.getPostId()));
   };
 
   render() {
@@ -97,6 +104,7 @@ class Post extends Component {
               key={index}
               comment={comment}
               onSave={this.handleCommentEdit}
+              onDelete={this.handleCommentDelete}
             />
           ))}
         </div>
@@ -123,7 +131,8 @@ const mapDispatchToProps = {
   loadComments,
   deletePost,
   createComment,
-  editComment
+  editComment,
+  deleteComment
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
