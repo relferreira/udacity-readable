@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { loadPostInfo, loadComments } from './reducer';
+import { loadPostInfo, loadComments } from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import { organizeValues } from '../../util/values-filter';
@@ -31,6 +32,7 @@ class Post extends Component {
     const filteredComments = organizeValues(comments, sortBy, orderBy);
     return (
       <div>
+        <Link to={`/edit-post/${post.id}`}>Edit</Link>
         <h1>Post</h1>
         <p>Title: {post.title}</p>
         <p>Category: {post.category}</p>

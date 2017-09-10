@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 import Home from './container/home/Home';
 import Post from './container/post/Post';
+import EditPost from './container/edit-post/EditPost';
 import logo from './logo.svg';
 import './App.css';
 
@@ -19,6 +20,7 @@ class App extends Component {
         </p>
         <Route exact path="/" component={Home} />
         <Route path="/posts/:id" component={Post} />
+        <Route path="/edit-post/:id" component={EditPost} />
       </div>
     );
   }

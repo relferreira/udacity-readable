@@ -38,25 +38,3 @@ export default function post(state = initialState, action) {
       return state;
   }
 }
-
-export function loadPostInfo(id) {
-  return {
-    type: LOAD_POST,
-    payload: {
-      request: {
-        url: `/posts/${id}`
-      }
-    }
-  };
-}
-
-export function loadComments(id) {
-  return {
-    type: LOAD_COMMENTS,
-    payload: {
-      request: {
-        url: `/posts/${id}/comments`
-      }
-    }
-  };
-}

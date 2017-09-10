@@ -67,6 +67,7 @@ class Home extends Component {
           </div>
         )}
         <div className="posts">
+          <Link to="/edit-post/new">New post</Link>
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
           <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
           {filteredPost.map((post, index) => (
