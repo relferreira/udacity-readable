@@ -18,9 +18,9 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Route exact path="/" component={Home} />
-        <Route path="/posts/:id" component={Post} />
-        <Route path="/edit-post/:id" component={EditPost} />
+        <Route exact path="/:category?" component={Home} />
+        <Route exact path="/:category/:id" component={Post} />
+        <Route path="/:category/:id/edit" component={EditPost} />
       </div>
     );
   }

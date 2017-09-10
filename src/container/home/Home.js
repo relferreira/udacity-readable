@@ -35,7 +35,7 @@ class Home extends Component {
   }
 
   checkSelectedCategory = props => {
-    let category = extractCategoryFromUrl(props.location.search);
+    const { category } = props.match.params;
     this.setState({ selectedCategory: category || null });
   };
 
@@ -62,21 +62,21 @@ class Home extends Component {
             <ul>
               {categories.map((category, index) => (
                 <li key={index}>
-                  <Link to={`/?category=${category.name}`}>
-                    {category.name}
-                  </Link>
+                  <Link to={`/${category.name}`}>{category.name}</Link>
                 </li>
               ))}
             </ul>
           </div>
         )}
         <div className="posts">
-          <Link to="/edit-post/new">New post</Link>
+          <Link to="none/new/edit">New post</Link>
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
           <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
           {filteredPost.map((post, index) => (
             <div key={index}>
-              <Link to={`/posts/${post.id}`}>Title: {post.title}</Link>
+              <Link to={`/${post.category}/${post.id}`}>
+                Title: {post.title}
+              </Link>
               <p>Category: {post.category}</p>
               <p>Author: {post.author}</p>
               <p>Date: {post.timestamp}</p>

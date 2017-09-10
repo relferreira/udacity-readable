@@ -92,7 +92,7 @@ class Post extends Component {
     const filteredComments = organizeValues(comments, sortBy, orderBy);
     return (
       <div>
-        <Link to={`/edit-post/${post.id}`}>Edit</Link>
+        <Link to={`/${post.category}/${post.id}/edit`}>Edit</Link>
         <a href="" onClick={this.handleDelete}>
           Delete
         </a>
