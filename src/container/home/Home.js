@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { listCategories, listPosts } from './actions';
+import { votePost } from '../post/actions';
 import { organizeValues } from '../../util/values-filter';
+import Vote from '../../component/Vote';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 
@@ -41,6 +43,8 @@ class Home extends Component {
 
   handleOrderByChange = event => this.setState({ orderBy: event.target.value });
 
+  handleVote = (id, option) => this.props.votePost(id, option);
+
   render() {
     const { categories, posts } = this.props.data;
     const { orderBy, sortBy, selectedCategory } = this.state;
@@ -77,6 +81,11 @@ class Home extends Component {
               <p>Author: {post.author}</p>
               <p>Date: {post.timestamp}</p>
               <p>Score: {post.voteScore}</p>
+              <Vote
+                voteScore={post.voteScore}
+                onUpVote={() => this.handleVote(post.id, 'upVote')}
+                onDownVote={() => this.handleVote(post.id, 'downVote')}
+              />
               <br />
             </div>
           ))}
@@ -92,7 +101,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   listCategories,
-  listPosts
+  listPosts,
+  votePost
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -105,6 +105,7 @@ export function votePost(id, option) {
   return {
     type: VOTE_POST,
     option,
+    id,
     payload: {
       request: {
         url: `/posts/${id}`,
