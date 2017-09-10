@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { loadPostInfo, loadComments } from './actions';
+import { loadPostInfo, loadComments, deletePost } from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import { organizeValues } from '../../util/values-filter';
@@ -16,15 +16,26 @@ class Post extends Component {
     };
   }
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const id = this.getPostId();
 
     this.props.loadPostInfo(id);
     this.props.loadComments(id);
   }
 
+  getPostId = () => {
+    const { id } = this.props.match.params;
+    return id;
+  };
+
   handleSortByChange = event => this.setState({ sortBy: event.target.value });
 
   handleOrderByChange = event => this.setState({ orderBy: event.target.value });
+
+  handleDelete = event => {
+    event.preventDefault();
+    const id = this.getPostId();
+    this.props.deletePost(id).then(() => this.props.history.replace('/'));
+  };
 
   render() {
     const { post, comments } = this.props.data;
@@ -33,6 +44,9 @@ class Post extends Component {
     return (
       <div>
         <Link to={`/edit-post/${post.id}`}>Edit</Link>
+        <a href="" onClick={this.handleDelete}>
+          Delete
+        </a>
         <h1>Post</h1>
         <p>Title: {post.title}</p>
         <p>Category: {post.category}</p>
@@ -58,7 +72,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   loadPostInfo,
-  loadComments
+  loadComments,
+  deletePost
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
