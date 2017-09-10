@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import * as uuidv1 from 'uuid/v1';
 
-import { loadPostInfo, loadComments, deletePost } from './actions';
+import {
+  loadPostInfo,
+  loadComments,
+  deletePost,
+  createComment
+} from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import { organizeValues } from '../../util/values-filter';
@@ -12,7 +18,8 @@ class Post extends Component {
     super(props);
     this.state = {
       orderBy: 'desc',
-      sortBy: 'voteScore'
+      sortBy: 'voteScore',
+      newComment: ''
     };
   }
   componentDidMount() {
@@ -37,9 +44,28 @@ class Post extends Component {
     this.props.deletePost(id).then(() => this.props.history.replace('/'));
   };
 
+  handleNewCommentChange = event =>
+    this.setState({ newComment: event.target.value });
+
+  handleCommentSubmit = event => {
+    event.preventDefault();
+    const postId = this.getPostId();
+    let newComment = {
+      id: uuidv1(),
+      timestamp: Date.now(),
+      body: this.state.newComment,
+      author: 'Renan',
+      parentId: postId
+    };
+    this.props.createComment(newComment).then(() => {
+      this.setState({ newComment: '' });
+      this.props.loadComments(postId);
+    });
+  };
+
   render() {
     const { post, comments } = this.props.data;
-    const { sortBy, orderBy } = this.state;
+    const { sortBy, orderBy, newComment } = this.state;
     const filteredComments = organizeValues(comments, sortBy, orderBy);
     return (
       <div>
@@ -61,6 +87,15 @@ class Post extends Component {
             <div key={index}>{JSON.stringify(comment)}</div>
           ))}
         </div>
+        <div className="new-comment">
+          <form onSubmit={this.handleCommentSubmit}>
+            <textarea
+              value={newComment}
+              onChange={this.handleNewCommentChange}
+            />
+            <button type="submit">Post</button>
+          </form>
+        </div>
       </div>
     );
   }
@@ -73,7 +108,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   loadPostInfo,
   loadComments,
-  deletePost
+  deletePost,
+  createComment
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
