@@ -21,6 +21,14 @@ export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
 export const DELETE_COMMENT_FAIL = 'DELETE_COMMENT_FAIL';
 
+export const VOTE_POST = 'VOTE_POST';
+export const VOTE_POST_SUCCESS = 'VOTE_POST_SUCCESS';
+export const VOTE_POST_FAIL = 'VOTE_POST_FAIL';
+
+export const VOTE_COMMENT = 'VOTE_COMMENT';
+export const VOTE_COMMENT_SUCCESS = 'VOTE_COMMENT_SUCCESS';
+export const VOTE_COMMENT_FAIL = 'VOTE_COMMENT_FAIL';
+
 export function loadPostInfo(id) {
   return {
     type: LOAD_POST,
@@ -88,6 +96,35 @@ export function deleteComment(id) {
       request: {
         url: `/comments/${id}`,
         method: 'delete'
+      }
+    }
+  };
+}
+
+export function votePost(id, option) {
+  return {
+    type: VOTE_POST,
+    option,
+    payload: {
+      request: {
+        url: `/posts/${id}`,
+        method: 'post',
+        data: { option }
+      }
+    }
+  };
+}
+
+export function voteComment(id, option) {
+  return {
+    type: VOTE_COMMENT,
+    id,
+    option,
+    payload: {
+      request: {
+        url: `/comments/${id}`,
+        method: 'post',
+        data: { option }
       }
     }
   };

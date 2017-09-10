@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Vote from './Vote';
+
 class Comment extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +37,11 @@ class Comment extends Component {
             <span>{JSON.stringify(comment)}</span>
             <button onClick={this.handleEditClick}>Edit</button>
             <button onClick={this.handleDeleteClick}>Delete</button>
+            <Vote
+              voteScore={comment.voteScore}
+              onUpVote={() => this.props.onVote(comment.id, 'upVote')}
+              onDownVote={() => this.props.onVote(comment.id, 'downVote')}
+            />
           </div>
         )}
         {editing && (
@@ -53,7 +60,8 @@ class Comment extends Component {
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
   onSave: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  onVote: PropTypes.func.isRequired
 };
 
 export default Comment;

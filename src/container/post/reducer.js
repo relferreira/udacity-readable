@@ -1,11 +1,4 @@
-import {
-  LOAD_POST,
-  LOAD_POST_SUCCESS,
-  LOAD_POST_FAIL,
-  LOAD_COMMENTS,
-  LOAD_COMMENTS_SUCCESS,
-  LOAD_COMMENTS_FAIL
-} from './actions';
+import * as actionValues from './actions';
 
 const initialState = {
   post: {},
@@ -16,24 +9,80 @@ const initialState = {
   errorComments: false
 };
 
+function vote(option, obj) {
+  return option === 'upVote' ? obj.voteScore + 1 : obj.voteScore - 1;
+}
+
+function unVote(option, obj) {
+  return option === 'upVote' ? obj.voteScore - 1 : obj.voteScore + 1;
+}
+
 export default function post(state = initialState, action) {
   switch (action.type) {
-    case LOAD_POST:
+    case actionValues.LOAD_POST:
       return { ...state, loading: true, post: {} };
-    case LOAD_POST_SUCCESS:
+    case actionValues.LOAD_POST_SUCCESS:
       return { ...state, loading: false, post: action.payload.data };
-    case LOAD_POST_FAIL:
+    case actionValues.LOAD_POST_FAIL:
       return { ...state, loading: false, error: 'TODO' };
-    case LOAD_COMMENTS:
+    case actionValues.LOAD_COMMENTS:
       return { ...state, loadingComments: true, comments: [] };
-    case LOAD_COMMENTS_SUCCESS:
+    case actionValues.LOAD_COMMENTS_SUCCESS:
       return {
         ...state,
         loadingComments: false,
         comments: action.payload.data
       };
-    case LOAD_COMMENTS_FAIL:
+    case actionValues.LOAD_COMMENTS_FAIL:
       return { ...state, loadingComments: false, errorComments: 'TODO' };
+    case actionValues.VOTE_POST:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          voteScore:
+            action.option === 'upVote'
+              ? state.post.voteScore + 1
+              : state.post.voteScore - 1
+        }
+      };
+    case actionValues.VOTE_POST_FAIL:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          voteScore:
+            action.option === 'upVote'
+              ? state.post.voteScore - 1
+              : state.post.voteScore + 1
+        }
+      };
+    case actionValues.VOTE_COMMENT:
+      let selectedIndex = state.comments.findIndex(
+        comment => comment.id === action.id
+      );
+      return {
+        ...state,
+        comments: state.comments.map(
+          (comment, index) =>
+            index === selectedIndex
+              ? { ...comment, voteScore: vote(action.option, comment) }
+              : comment
+        )
+      };
+    case actionValues.VOTE_COMMENT_FAIL:
+      let selectedIndexFail = state.comments.findIndex(
+        comment => comment.id === action.id
+      );
+      return {
+        ...state,
+        comments: state.comments.map(
+          (comment, index) =>
+            index === selectedIndexFail
+              ? { ...comment, voteScore: unVote(action.option, comment) }
+              : comment
+        )
+      };
     default:
       return state;
   }

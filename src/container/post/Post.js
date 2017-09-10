@@ -9,11 +9,14 @@ import {
   deletePost,
   createComment,
   editComment,
-  deleteComment
+  deleteComment,
+  votePost,
+  voteComment
 } from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import Comment from '../../component/Comment';
+import Vote from '../../component/Vote';
 import { organizeValues } from '../../util/values-filter';
 
 class Post extends Component {
@@ -79,6 +82,10 @@ class Post extends Component {
       .then(() => this.props.loadComments(this.getPostId()));
   };
 
+  handleVote = (id, option) => this.props.votePost(id, option);
+
+  handleCommentVote = (id, option) => this.props.voteComment(id, option);
+
   render() {
     const { post, comments } = this.props.data;
     const { sortBy, orderBy, newComment } = this.state;
@@ -95,6 +102,11 @@ class Post extends Component {
         <p>Author: {post.author}</p>
         <p>Date: {post.timestamp}</p>
         <p>Score: {post.voteScore}</p>
+        <Vote
+          voteScore={post.voteScore}
+          onUpVote={() => this.handleVote(post.id, 'upVote')}
+          onDownVote={() => this.handleVote(post.id, 'downVote')}
+        />
 
         <div className="comments">
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
@@ -105,6 +117,7 @@ class Post extends Component {
               comment={comment}
               onSave={this.handleCommentEdit}
               onDelete={this.handleCommentDelete}
+              onVote={this.handleCommentVote}
             />
           ))}
         </div>
@@ -132,7 +145,9 @@ const mapDispatchToProps = {
   deletePost,
   createComment,
   editComment,
-  deleteComment
+  deleteComment,
+  votePost,
+  voteComment
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
