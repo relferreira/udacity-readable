@@ -7,10 +7,12 @@ import {
   loadPostInfo,
   loadComments,
   deletePost,
-  createComment
+  createComment,
+  editComment
 } from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
+import Comment from '../../component/Comment';
 import { organizeValues } from '../../util/values-filter';
 
 class Post extends Component {
@@ -63,6 +65,13 @@ class Post extends Component {
     });
   };
 
+  handleCommentEdit = (id, body) => {
+    let timestamp = Date.now();
+    this.props
+      .editComment(id, timestamp, body)
+      .then(this.props.loadComments(this.getPostId()));
+  };
+
   render() {
     const { post, comments } = this.props.data;
     const { sortBy, orderBy, newComment } = this.state;
@@ -84,7 +93,11 @@ class Post extends Component {
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
           <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
           {filteredComments.map((comment, index) => (
-            <div key={index}>{JSON.stringify(comment)}</div>
+            <Comment
+              key={index}
+              comment={comment}
+              onSave={this.handleCommentEdit}
+            />
           ))}
         </div>
         <div className="new-comment">
@@ -109,7 +122,8 @@ const mapDispatchToProps = {
   loadPostInfo,
   loadComments,
   deletePost,
-  createComment
+  createComment,
+  editComment
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
