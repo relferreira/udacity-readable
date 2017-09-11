@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import glamorous, { Div } from 'glamorous';
 
 import { listCategories, listPosts } from './actions';
 import { votePost } from '../post/actions';
 import { organizeValues } from '../../util/values-filter';
+import Sidebar from '../../component/Sidebar';
 import Vote from '../../component/Vote';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
@@ -13,6 +15,18 @@ export function extractCategoryFromUrl(url) {
   let matches = url.match(/\?category=(.*)/);
   return matches ? matches[1] : null;
 }
+
+const HomeContainer = glamorous.div({
+  display: 'flex'
+});
+
+const SidebarContainer = glamorous.div({
+  width: 150
+});
+
+const PostsContainer = glamorous.div({
+  flex: 1
+});
 
 class Home extends Component {
   constructor(props) {
@@ -55,21 +69,13 @@ class Home extends Component {
       selectedCategory
     );
     return (
-      <div>
-        <h1>Home</h1>
+      <HomeContainer>
         {!selectedCategory && (
-          <div className="menu">
-            <ul>
-              {categories.map((category, index) => (
-                <li key={index}>
-                  <Link to={`/${category.name}`}>{category.name}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <SidebarContainer>
+            <Sidebar menus={categories} />
+          </SidebarContainer>
         )}
-        <div className="posts">
-          <Link to="none/new/edit">New post</Link>
+        <PostsContainer>
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
           <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
           {filteredPost.map((post, index) => (
@@ -89,8 +95,8 @@ class Home extends Component {
               <br />
             </div>
           ))}
-        </div>
-      </div>
+        </PostsContainer>
+      </HomeContainer>
     );
   }
 }
