@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as uuidv1 from 'uuid/v1';
+import glamorous from 'glamorous';
+import Select from 'react-select';
 
 import { listCategories } from '../home/actions';
 import { loadPostInfo } from '../post/actions';
 import { createPost, updatePost } from './actions';
+import TextArea from '../../component/TextArea';
+import Input from '../../component/Input';
+import CustomButton from '../../component/CustomButton';
+import Container from '../../component/Container';
 
 export function checkFormErrors(title, body, category) {
   return !title || !body || !category;
 }
+
+const EditForm = glamorous.form({
+  display: 'flex',
+  flexDirection: 'column'
+});
 
 class EditPost extends Component {
   constructor(props) {
@@ -46,8 +57,7 @@ class EditPost extends Component {
 
   handleBodyChange = event => this.setState({ body: event.target.value });
 
-  handleCategoryChange = event =>
-    this.setState({ category: event.target.value });
+  handleCategoryChange = event => this.setState({ category: event.value });
 
   handleSubmit = event => {
     event.preventDefault();
@@ -67,36 +77,53 @@ class EditPost extends Component {
     }
   };
 
-  checkErrors() {}
+  getCategories = categories => {
+    categories = categories.map((category, index) => ({
+      value: category.name,
+      label: category.name
+    }));
+    categories.unshift({ value: '', label: 'Select category' });
+    return categories;
+  };
 
   render() {
     const { categories } = this.props.home;
     const { title, body, category, editing } = this.state;
 
     return (
-      <div>
-        <h1>Edit Post</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" value={title} onChange={this.handleTitleChange} />
-          <textarea value={body} onChange={this.handleBodyChange} />
-          <select
+      <Container>
+        <EditForm onSubmit={this.handleSubmit}>
+          <Input
+            type="text"
+            value={title}
+            onChange={this.handleTitleChange}
+            placeholder="Title"
+            css={{ marginTop: 20, marginBottom: 20 }}
+          />
+          <Select
+            name="form-field-name"
             value={category}
-            onChange={this.handleCategoryChange}
+            clearable={false}
+            searchable={false}
+            options={this.getCategories(categories)}
             disabled={editing}
-          >
-            <option value={''}>Select category</option>
-            {categories.map((category, index) => (
-              <option key={index}>{category.name}</option>
-            ))}
-          </select>
-          <button
+            onChange={this.handleCategoryChange}
+          />
+          <TextArea
+            value={body}
+            onChange={this.handleBodyChange}
+            placeholder="Body"
+            css={{ marginTop: 20 }}
+          />
+          <CustomButton
             type="submit"
             disabled={checkFormErrors(title, body, category)}
+            css={{ alignSelf: 'flex-end', width: 200, marginTop: 20 }}
           >
             Save
-          </button>
-        </form>
-      </div>
+          </CustomButton>
+        </EditForm>
+      </Container>
     );
   }
 }

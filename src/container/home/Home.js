@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import glamorous from 'glamorous';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
@@ -8,7 +7,6 @@ import { listCategories, listPosts } from './actions';
 import { votePost } from '../post/actions';
 import { organizeValues } from '../../util/values-filter';
 import Menu from '../../component/Menu';
-import Vote from '../../component/Vote';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import PostCard from '../../component/PostCard';

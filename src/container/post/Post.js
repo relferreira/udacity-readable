@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import * as uuidv1 from 'uuid/v1';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import glamorous, { Div, Form } from 'glamorous';
@@ -19,7 +18,6 @@ import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import PostCard from '../../component/PostCard';
 import Comment from '../../component/Comment';
-import Vote from '../../component/Vote';
 import TextArea from '../../component/TextArea';
 import CustomButton from '../../component/CustomButton';
 import Loading from '../../component/Loading';

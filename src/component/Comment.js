@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import glamorous, { Div, Button } from 'glamorous';
+import glamorous from 'glamorous';
 
 import Vote from './Vote';
 import DeleteButton from './DeleteButton';
