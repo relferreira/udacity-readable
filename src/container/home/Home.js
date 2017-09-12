@@ -4,7 +4,7 @@ import glamorous from 'glamorous';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import { listCategories, listPosts } from './actions';
-import { votePost } from '../post/actions';
+import { votePost, deletePost } from '../post/actions';
 import { organizeValues } from '../../util/values-filter';
 import Menu from '../../component/Menu';
 import SortBy from '../../component/SortBy';
@@ -64,6 +64,8 @@ class Home extends Component {
 
   handleVote = (id, option) => this.props.votePost(id, option);
 
+  handlePostDelete = id => this.props.deletePost(id);
+
   render() {
     const { categories, posts, loading } = this.props.data;
     const { orderBy, sortBy, selectedCategory } = this.state;
@@ -95,6 +97,7 @@ class Home extends Component {
                     timestamp={post.timestamp}
                     voteScore={post.voteScore}
                     onVote={this.handleVote}
+                    onDelete={this.handlePostDelete}
                   />
                 </Col>
               ))}
@@ -113,7 +116,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   listCategories,
   listPosts,
-  votePost
+  votePost,
+  deletePost
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

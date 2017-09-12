@@ -43,6 +43,7 @@ export function loadPostInfo(id) {
 export function deletePost(id) {
   return {
     type: DELETE_POST,
+    id,
     payload: {
       request: {
         url: `/posts/${id}`,
