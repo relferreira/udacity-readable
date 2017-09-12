@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import glamorous, { Div } from 'glamorous';
+import glamorous from 'glamorous';
 
 import { listCategories, listPosts } from './actions';
 import { votePost } from '../post/actions';
 import { organizeValues } from '../../util/values-filter';
-import Sidebar from '../../component/Sidebar';
+import Menu from '../../component/Menu';
 import Vote from '../../component/Vote';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
@@ -16,13 +16,7 @@ export function extractCategoryFromUrl(url) {
   return matches ? matches[1] : null;
 }
 
-const HomeContainer = glamorous.div({
-  display: 'flex'
-});
-
-const SidebarContainer = glamorous.div({
-  width: 150
-});
+const HomeContainer = glamorous.div({});
 
 const PostsContainer = glamorous.div({
   flex: 1
@@ -70,11 +64,7 @@ class Home extends Component {
     );
     return (
       <HomeContainer>
-        {!selectedCategory && (
-          <SidebarContainer>
-            <Sidebar menus={categories} />
-          </SidebarContainer>
-        )}
+        {!selectedCategory && <Menu menus={categories} />}
         <PostsContainer>
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
           <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
