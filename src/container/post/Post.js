@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as uuidv1 from 'uuid/v1';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import glamorous, { Div, Form } from 'glamorous';
 
 import {
   loadPostInfo,
@@ -15,9 +17,27 @@ import {
 } from './actions';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
+import PostCard from '../../component/PostCard';
 import Comment from '../../component/Comment';
 import Vote from '../../component/Vote';
+import TextArea from '../../component/TextArea';
+import CustomButton from '../../component/CustomButton';
+import Loading from '../../component/Loading';
 import { organizeValues } from '../../util/values-filter';
+
+const PostContainer = glamorous.div({
+  margin: '20px auto'
+});
+
+const FiltersContainer = glamorous.div({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  width: '100%',
+  '& .Select': {
+    width: 150,
+    marginRight: 10
+  }
+});
 
 class Post extends Component {
   constructor(props) {
@@ -40,9 +60,9 @@ class Post extends Component {
     return id;
   };
 
-  handleSortByChange = event => this.setState({ sortBy: event.target.value });
+  handleSortByChange = event => this.setState({ sortBy: event.value });
 
-  handleOrderByChange = event => this.setState({ orderBy: event.target.value });
+  handleOrderByChange = event => this.setState({ orderBy: event.value });
 
   handleDelete = event => {
     event.preventDefault();
@@ -87,50 +107,81 @@ class Post extends Component {
   handleCommentVote = (id, option) => this.props.voteComment(id, option);
 
   render() {
-    const { post, comments } = this.props.data;
+    const { post, comments, loading, loadingComments } = this.props.data;
     const { sortBy, orderBy, newComment } = this.state;
     const filteredComments = organizeValues(comments, sortBy, orderBy);
+    if (!post) return null;
     return (
-      <div>
-        <Link to={`/${post.category}/${post.id}/edit`}>Edit</Link>
-        <a href="" onClick={this.handleDelete}>
-          Delete
-        </a>
-        <h1>Post</h1>
-        <p>Title: {post.title}</p>
-        <p>Category: {post.category}</p>
-        <p>Author: {post.author}</p>
-        <p>Date: {post.timestamp}</p>
-        <p>Score: {post.voteScore}</p>
-        <Vote
-          voteScore={post.voteScore}
-          onUpVote={() => this.handleVote(post.id, 'upVote')}
-          onDownVote={() => this.handleVote(post.id, 'downVote')}
-        />
-
-        <div className="comments">
-          <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
-          <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
-          {filteredComments.map((comment, index) => (
-            <Comment
-              key={index}
-              comment={comment}
-              onSave={this.handleCommentEdit}
-              onDelete={this.handleCommentDelete}
-              onVote={this.handleCommentVote}
-            />
-          ))}
-        </div>
-        <div className="new-comment">
-          <form onSubmit={this.handleCommentSubmit}>
-            <textarea
-              value={newComment}
-              onChange={this.handleNewCommentChange}
-            />
-            <button type="submit">Post</button>
-          </form>
-        </div>
-      </div>
+      <PostContainer>
+        <Grid>
+          <Row>
+            <Col xs={12}>
+              {loading ? (
+                <Loading width={40} height={40} />
+              ) : (
+                <PostCard
+                  id={post.id}
+                  category={post.category}
+                  title={post.title}
+                  author={post.author}
+                  timestamp={post.timestamp}
+                  body={post.body}
+                  voteScore={post.voteScore}
+                  onVote={this.handleVote}
+                />
+              )}
+            </Col>
+          </Row>
+          <Row>
+            <Div width="100%" marginTop={20}>
+              <FiltersContainer>
+                <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
+                <OrderBy
+                  value={orderBy}
+                  onOrderChange={this.handleOrderByChange}
+                />
+              </FiltersContainer>
+            </Div>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Form
+                marginTop={20}
+                display="flex"
+                onSubmit={this.handleCommentSubmit}
+              >
+                <TextArea
+                  value={newComment}
+                  placeholder="Leave a comment!"
+                  onChange={this.handleNewCommentChange}
+                  css={{ flex: 1 }}
+                />
+                <CustomButton type="submit" css={{ marginLeft: 20 }}>
+                  Post
+                </CustomButton>
+              </Form>
+            </Col>
+          </Row>
+          <Row>
+            {loadingComments ? (
+              <Div width="100%" marginTop={20} textAlign="center">
+                <Loading />
+              </Div>
+            ) : (
+              filteredComments.map((comment, index) => (
+                <Col key={index} xs={12}>
+                  <Comment
+                    comment={comment}
+                    onSave={this.handleCommentEdit}
+                    onDelete={this.handleCommentDelete}
+                    onVote={this.handleCommentVote}
+                  />
+                </Col>
+              ))
+            )}
+          </Row>
+        </Grid>
+      </PostContainer>
     );
   }
 }

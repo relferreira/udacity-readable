@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Img } from 'glamorous';
 
 import LoadingIndicator from '../assets/rolling.gif';
 
-const Loading = ({ width, height }) => {
+const Loading = ({ width, height, css }) => {
   return (
-    <img
+    <Img
       src={LoadingIndicator}
       alt="loading indicator"
       width={width}
       height={height}
+      css={css}
     />
   );
 };

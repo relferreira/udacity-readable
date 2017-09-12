@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import glamorous from 'glamorous';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
-import deleteIcon from '../assets/ic_delete.png';
-import editIcon from '../assets/ic_edit.png';
+import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
 import Vote from './Vote';
 
 const PostCardContainer = glamorous.div({
@@ -26,12 +26,17 @@ const PostCardFooter = glamorous.div({
   marginTop: 20
 });
 
+const FooterContainer = glamorous.div({
+  textAlign: 'center'
+});
+
 const PostCard = ({
   id,
   category,
   title,
   author,
   timestamp,
+  body,
   voteScore,
   onVote
 }) => {
@@ -41,14 +46,19 @@ const PostCard = ({
       <p>Category: {category}</p>
       <p>Author: {author}</p>
       <p>Date: {new Date(timestamp).toLocaleDateString()}</p>
+      <p>{body}</p>
       <PostCardFooter>
         <Grid fluid>
           <Row>
             <Col xs={4}>
-              <img src={deleteIcon} alt="" />
+              <FooterContainer>
+                <DeleteButton />
+              </FooterContainer>
             </Col>
             <Col xs={4}>
-              <img src={editIcon} alt="" />
+              <FooterContainer>
+                <EditButton />
+              </FooterContainer>
             </Col>
             <Col xs={4}>
               <Vote
@@ -65,12 +75,13 @@ const PostCard = ({
 };
 
 PostCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  timestamp: PropTypes.number.isRequired,
-  voteScore: PropTypes.number.isRequired,
+  id: PropTypes.string,
+  category: PropTypes.string,
+  title: PropTypes.string,
+  author: PropTypes.string,
+  timestamp: PropTypes.number,
+  body: PropTypes.string,
+  voteScore: PropTypes.number,
   onVote: PropTypes.func
 };
 

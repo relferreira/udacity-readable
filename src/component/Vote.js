@@ -13,7 +13,8 @@ const IconButton = glamorous.button({
 
 const VoteContainer = glamorous.div({
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  justifyContent: 'center'
 });
 
 const Vote = ({ voteScore, onUpVote, onDownVote }) => {
