@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
+import 'react-select/dist/react-select.css';
 
 import Header from './component/Header';
 import Home from './container/home/Home';

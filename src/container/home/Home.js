@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import glamorous from 'glamorous';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import { listCategories, listPosts } from './actions';
 import { votePost } from '../post/actions';
@@ -10,6 +11,8 @@ import Menu from '../../component/Menu';
 import Vote from '../../component/Vote';
 import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
+import PostCard from '../../component/PostCard';
+import Loading from '../../component/Loading';
 
 export function extractCategoryFromUrl(url) {
   let matches = url.match(/\?category=(.*)/);
@@ -19,7 +22,17 @@ export function extractCategoryFromUrl(url) {
 const HomeContainer = glamorous.div({});
 
 const PostsContainer = glamorous.div({
-  flex: 1
+  marginTop: 20
+});
+
+const FiltersContainer = glamorous.div({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: 20,
+  '& .Select': {
+    width: 150,
+    marginRight: 20
+  }
 });
 
 class Home extends Component {
@@ -47,14 +60,14 @@ class Home extends Component {
     this.setState({ selectedCategory: category || null });
   };
 
-  handleSortByChange = event => this.setState({ sortBy: event.target.value });
+  handleSortByChange = event => this.setState({ sortBy: event.value });
 
-  handleOrderByChange = event => this.setState({ orderBy: event.target.value });
+  handleOrderByChange = event => this.setState({ orderBy: event.value });
 
   handleVote = (id, option) => this.props.votePost(id, option);
 
   render() {
-    const { categories, posts } = this.props.data;
+    const { categories, posts, loading } = this.props.data;
     const { orderBy, sortBy, selectedCategory } = this.state;
     const filteredPost = organizeValues(
       posts,
@@ -65,26 +78,30 @@ class Home extends Component {
     return (
       <HomeContainer>
         {!selectedCategory && <Menu menus={categories} />}
-        <PostsContainer>
+        <FiltersContainer>
           <SortBy value={sortBy} onSortChange={this.handleSortByChange} />
           <OrderBy value={orderBy} onOrderChange={this.handleOrderByChange} />
-          {filteredPost.map((post, index) => (
-            <div key={index}>
-              <Link to={`/${post.category}/${post.id}`}>
-                Title: {post.title}
-              </Link>
-              <p>Category: {post.category}</p>
-              <p>Author: {post.author}</p>
-              <p>Date: {post.timestamp}</p>
-              <p>Score: {post.voteScore}</p>
-              <Vote
-                voteScore={post.voteScore}
-                onUpVote={() => this.handleVote(post.id, 'upVote')}
-                onDownVote={() => this.handleVote(post.id, 'downVote')}
-              />
-              <br />
-            </div>
-          ))}
+        </FiltersContainer>
+        {!loading && filteredPost.length === 0 && <h2>No Posts!</h2>}
+        {loading && <Loading width={40} height={40} />}
+        <PostsContainer>
+          <Grid>
+            <Row>
+              {filteredPost.map((post, index) => (
+                <Col key={index} xs={12} md={6}>
+                  <PostCard
+                    id={post.id}
+                    category={post.category}
+                    title={post.title}
+                    author={post.author}
+                    timestamp={post.timestamp}
+                    voteScore={post.voteScore}
+                    onVote={this.handleVote}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Grid>
         </PostsContainer>
       </HomeContainer>
     );

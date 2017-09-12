@@ -1,12 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
+
+const options = [
+  { value: 'voteScore', label: 'Vote score' },
+  { value: 'timestamp', label: 'Date' }
+];
 
 const SortBy = ({ value, onSortChange }) => {
   return (
-    <select value={value} onChange={onSortChange}>
-      <option value="voteScore">Vote score</option>
-      <option value="timestamp">Date</option>
-    </select>
+    <Select
+      name="form-field-name"
+      value={value}
+      clearable={false}
+      searchable={false}
+      options={options}
+      onChange={onSortChange}
+    />
   );
 };
 
