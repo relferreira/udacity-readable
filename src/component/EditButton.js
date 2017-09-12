@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import glamorous from 'glamorous';
 
 import editIcon from '../assets/ic_edit.png';
@@ -9,12 +11,17 @@ const ButtonContainer = glamorous.button({
   cursor: 'pointer'
 });
 
-const EditButton = ({ onClick }) => {
+const EditButton = ({ category, id }) => {
   return (
-    <ButtonContainer onClick={onClick}>
+    <Link to={`/${category}/${id}/edit`}>
       <img src={editIcon} alt="edit" />
-    </ButtonContainer>
+    </Link>
   );
+};
+
+EditButton.propTypes = {
+  category: PropTypes.string,
+  id: PropTypes.string
 };
 
 export default EditButton;

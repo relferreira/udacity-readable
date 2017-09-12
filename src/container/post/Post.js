@@ -62,9 +62,7 @@ class Post extends Component {
 
   handleOrderByChange = event => this.setState({ orderBy: event.value });
 
-  handleDelete = event => {
-    event.preventDefault();
-    const id = this.getPostId();
+  handleDelete = id => {
     this.props.deletePost(id).then(() => this.props.history.replace('/'));
   };
 
@@ -126,6 +124,7 @@ class Post extends Component {
                   body={post.body}
                   voteScore={post.voteScore}
                   onVote={this.handleVote}
+                  onDelete={this.handleDelete}
                 />
               )}
             </Col>

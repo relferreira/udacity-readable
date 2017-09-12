@@ -38,7 +38,8 @@ const PostCard = ({
   timestamp,
   body,
   voteScore,
-  onVote
+  onVote,
+  onDelete
 }) => {
   return (
     <PostCardContainer>
@@ -52,12 +53,12 @@ const PostCard = ({
           <Row>
             <Col xs={4}>
               <FooterContainer>
-                <DeleteButton />
+                <DeleteButton onClick={() => onDelete(id)} />
               </FooterContainer>
             </Col>
             <Col xs={4}>
               <FooterContainer>
-                <EditButton />
+                <EditButton category={category} id={id} />
               </FooterContainer>
             </Col>
             <Col xs={4}>
@@ -82,7 +83,8 @@ PostCard.propTypes = {
   timestamp: PropTypes.number,
   body: PropTypes.string,
   voteScore: PropTypes.number,
-  onVote: PropTypes.func
+  onVote: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
 export default PostCard;

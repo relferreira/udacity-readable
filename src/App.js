@@ -13,7 +13,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header title="Readable">
-          <Link to="none/new/edit">New post</Link>
+          <Link to="/none/new/edit">New post</Link>
         </Header>
         <Route exact path="/:category?" component={Home} />
         <Route exact path="/:category/:id" component={Post} />
