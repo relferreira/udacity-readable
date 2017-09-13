@@ -14,7 +14,8 @@ class App extends Component {
     return (
       <div className="App">
         <Header title="Readable" />
-        <Route exact path="/:category?" component={Home} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/:category" component={Home} />
         <Route exact path="/:category/:id" component={Post} />
         <Route path="/:category/:id/edit" component={EditPost} />
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import glamorous from 'glamorous';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
-import { listCategories, listPosts } from './actions';
+import { listCategories, listPosts, listCategoryPosts } from './actions';
 import { votePost, deletePost } from '../post/actions';
 import { organizeValues } from '../../util/values-filter';
 import Menu from '../../component/Menu';
@@ -45,18 +45,16 @@ class Home extends Component {
     };
   }
   componentDidMount() {
+    let category = this.checkSelectedCategory(this.props);
     this.props.listCategories();
-    this.props.listPosts();
-    this.checkSelectedCategory(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.checkSelectedCategory(nextProps);
+    if (!category) this.props.listPosts();
+    else this.props.listCategoryPosts(category);
   }
 
   checkSelectedCategory = props => {
     const { category } = props.match.params;
     this.setState({ selectedCategory: category || null });
+    return category;
   };
 
   handleSortByChange = event => this.setState({ sortBy: event.value });
@@ -124,6 +122,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   listCategories,
   listPosts,
+  listCategoryPosts,
   votePost,
   deletePost
 };

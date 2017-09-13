@@ -18,10 +18,13 @@ const initialState = {
 export default function home(state = initialState, action) {
   switch (action.type) {
     case actionValues.LIST_POSTS:
+    case actionValues.LIST_CATEGORY_POSTS:
       return { ...state, loading: true, posts: [] };
     case actionValues.LIST_POSTS_SUCCESS:
+    case actionValues.LIST_CATEGORY_POSTS_SUCCESS:
       return { ...state, loading: false, posts: action.payload.data };
     case actionValues.LIST_POSTS_FAIL:
+    case actionValues.LIST_CATEGORY_POSTS_FAIL:
       return { ...state, loading: false, error: 'error listing posts' };
     case actionValues.LIST_CATEGORIES:
       return { ...state, loadingCategories: true, categories: [] };
