@@ -104,6 +104,8 @@ class Post extends Component {
     const { sortBy, orderBy, newComment } = this.state;
     const filteredComments = organizeValues(comments, sortBy, orderBy);
     if (!post) return null;
+    if (!loading && !post.id)
+      return <PostContainer>Post not found!</PostContainer>;
     return (
       <PostContainer>
         <Grid>
