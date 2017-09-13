@@ -6,13 +6,14 @@ const ButtonStyle = glamorous.button({
   fontSize: '14px',
   border: 'none',
   borderRadius: '3px',
-  background: '#009688',
+  background: '#02d4c0',
   color: '#fff',
   boxShadow:
     '0 10px 40px 0 rgba(62,57,107,0.07), 0 2px 9px 0 rgba(62,57,107,0.06)',
   cursor: 'pointer',
   ':disabled': {
-    background: '#02d4c0'
+    background: '#009688',
+    cursor: 'inherit'
   }
 });
 

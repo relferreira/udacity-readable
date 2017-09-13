@@ -11,6 +11,7 @@ import SortBy from '../../component/SortBy';
 import OrderBy from '../../component/OrderBy';
 import PostCard from '../../component/PostCard';
 import Loading from '../../component/Loading';
+import Fab from '../../component/Fab';
 
 export function extractCategoryFromUrl(url) {
   let matches = url.match(/\?category=(.*)/);
@@ -66,6 +67,8 @@ class Home extends Component {
 
   handlePostDelete = id => this.props.deletePost(id);
 
+  handleNewPostClick = () => this.props.history.push('/none/new/edit');
+
   render() {
     const { categories, posts, loading } = this.props.data;
     const { orderBy, sortBy, selectedCategory } = this.state;
@@ -104,6 +107,10 @@ class Home extends Component {
             </Row>
           </Grid>
         </PostsContainer>
+        <Fab
+          onClick={this.handleNewPostClick}
+          css={{ position: 'fixed', bottom: 16, right: 16 }}
+        />
       </HomeContainer>
     );
   }
