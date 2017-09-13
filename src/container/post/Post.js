@@ -109,7 +109,7 @@ class Post extends Component {
   handleCommentVote = (id, option) => this.props.voteComment(id, option);
 
   showSnack = message =>
-    this.props.showSnack('posts', { label: message, timeout: 7000 });
+    this.props.showSnack('posts', { label: message, timeout: 4000 });
 
   render() {
     const { post, comments, loading, loadingComments } = this.props.data;
