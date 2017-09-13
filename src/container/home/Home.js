@@ -97,6 +97,7 @@ class Home extends Component {
                     category={post.category}
                     title={post.title}
                     author={post.author}
+                    comments={post.comments}
                     timestamp={post.timestamp}
                     voteScore={post.voteScore}
                     onVote={this.handleVote}

@@ -132,6 +132,7 @@ class Post extends Component {
                   title={post.title}
                   author={post.author}
                   timestamp={post.timestamp}
+                  comments={post.comments}
                   body={post.body}
                   voteScore={post.voteScore}
                   onVote={this.handleVote}

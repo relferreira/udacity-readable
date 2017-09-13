@@ -37,6 +37,7 @@ const PostCard = ({
   author,
   timestamp,
   body,
+  comments,
   voteScore,
   onVote,
   onDelete
@@ -47,6 +48,7 @@ const PostCard = ({
       <p>Category: {category}</p>
       <p>Author: {author}</p>
       <p>Date: {new Date(timestamp).toLocaleDateString()}</p>
+      <p>Comments: {comments}</p>
       <p>{body}</p>
       <PostCardFooter>
         <Grid fluid>
@@ -82,6 +84,7 @@ PostCard.propTypes = {
   author: PropTypes.string,
   timestamp: PropTypes.number,
   body: PropTypes.string,
+  comments: PropTypes.number,
   voteScore: PropTypes.number,
   onVote: PropTypes.func,
   onDelete: PropTypes.func
