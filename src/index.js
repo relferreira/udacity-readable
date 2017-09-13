@@ -23,7 +23,6 @@ const axiosMiddlewareConfig = {
     response: [
       {
         error: function({ getState, dispatch, getSourceAction }, error) {
-          console.log(error);
           if (error) {
             dispatch(
               showSnack('error', { label: error.message, timeout: 5000 })
