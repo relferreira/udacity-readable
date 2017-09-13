@@ -81,6 +81,7 @@ export default function post(state = initialState, action) {
       return {
         ...state,
         comments: state.comments.concat(action.comment),
+        post: { ...state.post, comments: state.post.comments + 1 },
         commentSnapshot: action.comment
       };
     case actionValues.CREATE_COMMENT_FAIL:
@@ -89,6 +90,7 @@ export default function post(state = initialState, action) {
         comments: state.comments.filter(
           comment => comment.id !== state.commentSnapshot.id
         ),
+        post: { ...state.post, comments: state.post.comments - 1 },
         commentSnapshot: null,
         error: 'Error creating comment'
       };
@@ -121,6 +123,7 @@ export default function post(state = initialState, action) {
       return {
         ...state,
         comments: state.comments.filter(comment => comment.id !== action.id),
+        post: { ...state.post, comments: state.post.comments - 1 },
         commentSnapshot: state.comments.find(
           comment => comment.id === action.id
         )
@@ -129,6 +132,7 @@ export default function post(state = initialState, action) {
       return {
         ...state,
         comments: state.comments.concat(state.commentSnapshot),
+        post: { ...state.post, comments: state.post.comments + 1 },
         commentSnapshot: null,
         error: 'Error removing comment'
       };

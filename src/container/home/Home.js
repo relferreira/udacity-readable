@@ -21,7 +21,7 @@ export function extractCategoryFromUrl(url) {
 const HomeContainer = glamorous.div({});
 
 const PostsContainer = glamorous.div({
-  marginTop: 20
+  margin: '20px 0'
 });
 
 const FiltersContainer = glamorous.div({

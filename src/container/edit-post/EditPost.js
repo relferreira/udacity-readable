@@ -56,8 +56,9 @@ class EditPost extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { loading } = nextProps.data;
     const { post: postInfo } = nextProps.post;
-    if (postInfo && postInfo.id) {
+    if (!loading && postInfo && postInfo.id) {
       this.setState({
         ...postInfo,
         editing: true
