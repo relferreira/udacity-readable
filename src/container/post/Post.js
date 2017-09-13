@@ -21,6 +21,7 @@ import Comment from '../../component/Comment';
 import TextArea from '../../component/TextArea';
 import CustomButton from '../../component/CustomButton';
 import Loading from '../../component/Loading';
+import Container from '../../component/Container';
 import { organizeValues } from '../../util/values-filter';
 
 const PostContainer = glamorous.div({
@@ -77,25 +78,21 @@ class Post extends Component {
       timestamp: Date.now(),
       body: this.state.newComment,
       author: 'Renan',
-      parentId: postId
+      parentId: postId,
+      voteScore: 1
     };
     this.props.createComment(newComment).then(() => {
       this.setState({ newComment: '' });
-      this.props.loadComments(postId);
     });
   };
 
   handleCommentEdit = (id, body) => {
     let timestamp = Date.now();
-    this.props
-      .editComment(id, timestamp, body)
-      .then(() => this.props.loadComments(this.getPostId()));
+    this.props.editComment(id, timestamp, body);
   };
 
   handleCommentDelete = id => {
-    this.props
-      .deleteComment(id)
-      .then(() => this.props.loadComments(this.getPostId()));
+    this.props.deleteComment(id);
   };
 
   handleVote = (id, option) => this.props.votePost(id, option);
@@ -140,44 +137,49 @@ class Post extends Component {
               </FiltersContainer>
             </Div>
           </Row>
-          <Row>
-            <Col xs={12}>
-              <Form
-                marginTop={20}
-                display="flex"
-                onSubmit={this.handleCommentSubmit}
-              >
-                <TextArea
-                  value={newComment}
-                  placeholder="Leave a comment!"
-                  onChange={this.handleNewCommentChange}
-                  css={{ flex: 1 }}
-                />
-                <CustomButton type="submit" css={{ marginLeft: 20 }}>
-                  Post
-                </CustomButton>
-              </Form>
-            </Col>
-          </Row>
-          <Row>
-            {loadingComments ? (
-              <Div width="100%" marginTop={20} textAlign="center">
-                <Loading />
-              </Div>
-            ) : (
-              filteredComments.map((comment, index) => (
-                <Col key={index} xs={12}>
-                  <Comment
-                    comment={comment}
-                    onSave={this.handleCommentEdit}
-                    onDelete={this.handleCommentDelete}
-                    onVote={this.handleCommentVote}
-                  />
-                </Col>
-              ))
-            )}
-          </Row>
         </Grid>
+        <Container>
+          <Grid fluid>
+            <Row>
+              <Col xs={12}>
+                <Form
+                  marginTop={20}
+                  display="flex"
+                  onSubmit={this.handleCommentSubmit}
+                  css={{ margin: '20px 0' }}
+                >
+                  <TextArea
+                    value={newComment}
+                    placeholder="Leave a comment!"
+                    onChange={this.handleNewCommentChange}
+                    css={{ flex: 1 }}
+                  />
+                  <CustomButton type="submit" css={{ marginLeft: 20 }}>
+                    Post
+                  </CustomButton>
+                </Form>
+              </Col>
+            </Row>
+            <Row>
+              {loadingComments ? (
+                <Div width="100%" marginTop={20} textAlign="center">
+                  <Loading />
+                </Div>
+              ) : (
+                filteredComments.map((comment, index) => (
+                  <Col key={index} xs={12}>
+                    <Comment
+                      comment={comment}
+                      onSave={this.handleCommentEdit}
+                      onDelete={this.handleCommentDelete}
+                      onVote={this.handleCommentVote}
+                    />
+                  </Col>
+                ))
+              )}
+            </Row>
+          </Grid>
+        </Container>
       </PostContainer>
     );
   }

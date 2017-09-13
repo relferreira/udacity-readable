@@ -67,6 +67,7 @@ export function loadComments(id) {
 export function createComment(comment) {
   return {
     type: CREATE_COMMENT,
+    comment,
     payload: {
       request: {
         url: '/comments',
@@ -80,6 +81,9 @@ export function createComment(comment) {
 export function editComment(id, timestamp, body) {
   return {
     type: EDIT_COMMENT,
+    id,
+    timestamp,
+    body,
     payload: {
       request: {
         url: `/comments/${id}`,
@@ -93,6 +97,7 @@ export function editComment(id, timestamp, body) {
 export function deleteComment(id) {
   return {
     type: DELETE_COMMENT,
+    id,
     payload: {
       request: {
         url: `/comments/${id}`,

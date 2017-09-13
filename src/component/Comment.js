@@ -51,8 +51,10 @@ class Comment extends Component {
     };
   }
 
-  handleEditClick = event =>
+  handleEditClick = event => {
+    event.preventDefault();
     this.setState({ body: this.props.comment.body, editing: true });
+  };
 
   handleDeleteClick = event => this.props.onDelete(this.props.comment.id);
 

@@ -21,6 +21,17 @@ const EditForm = glamorous.form({
   flexDirection: 'column'
 });
 
+const FormFooter = glamorous.div({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  marginTop: 20,
+  '& .Select': {
+    width: 200,
+    marginRight: 20
+  }
+});
+
 class EditPost extends Component {
   constructor(props) {
     super(props);
@@ -98,30 +109,32 @@ class EditPost extends Component {
             value={title}
             onChange={this.handleTitleChange}
             placeholder="Title"
-            css={{ marginTop: 20, marginBottom: 20 }}
-          />
-          <Select
-            name="form-field-name"
-            value={category}
-            clearable={false}
-            searchable={false}
-            options={this.getCategories(categories)}
-            disabled={editing}
-            onChange={this.handleCategoryChange}
+            css={{ marginTop: 20, marginBottom: 20, fontSize: '20px' }}
           />
           <TextArea
             value={body}
             onChange={this.handleBodyChange}
             placeholder="Body"
-            css={{ marginTop: 20 }}
+            css={{ marginTop: 20, fontSize: '14px' }}
           />
-          <CustomButton
-            type="submit"
-            disabled={checkFormErrors(title, body, category)}
-            css={{ alignSelf: 'flex-end', width: 200, marginTop: 20 }}
-          >
-            Save
-          </CustomButton>
+          <FormFooter>
+            <Select
+              name="form-field-name"
+              value={category}
+              clearable={false}
+              searchable={false}
+              options={this.getCategories(categories)}
+              disabled={editing}
+              onChange={this.handleCategoryChange}
+            />
+            <CustomButton
+              type="submit"
+              disabled={checkFormErrors(title, body, category)}
+              css={{ width: 200 }}
+            >
+              Save
+            </CustomButton>
+          </FormFooter>
         </EditForm>
       </Container>
     );

@@ -7,7 +7,8 @@ const initialState = {
   loading: false,
   loadingComments: false,
   error: false,
-  errorComments: false
+  errorComments: false,
+  commentSnapshot: null
 };
 
 export default function post(state = initialState, action) {
@@ -75,6 +76,61 @@ export default function post(state = initialState, action) {
               ? { ...comment, voteScore: unVote(action.option, comment) }
               : comment
         )
+      };
+    case actionValues.CREATE_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.concat(action.comment),
+        commentSnapshot: action.comment
+      };
+    case actionValues.CREATE_COMMENT_FAIL:
+      return {
+        ...state,
+        comments: state.comments.filter(
+          comment => comment.id !== state.commentSnapshot.id
+        ),
+        commentSnapshot: null,
+        error: 'Error creating comment'
+      };
+    case actionValues.EDIT_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.map(
+          comment =>
+            comment.id === action.id
+              ? { ...comment, timestamp: action.timestamp, body: action.body }
+              : comment
+        ),
+        commentSnapshot: state.comments.find(
+          comment => comment.id === action.id
+        )
+      };
+    case actionValues.EDIT_COMMENT_FAIL:
+      return {
+        ...state,
+        comments: state.comments.map(
+          comment =>
+            comment.id === state.commentSnapshot.id
+              ? state.commentSnapshot
+              : comment
+        ),
+        commentSnapshot: null,
+        error: 'Error updating comment'
+      };
+    case actionValues.DELETE_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.filter(comment => comment.id !== action.id),
+        commentSnapshot: state.comments.find(
+          comment => comment.id === action.id
+        )
+      };
+    case actionValues.DELETE_COMMENT_FAIL:
+      return {
+        ...state,
+        comments: state.comments.concat(state.commentSnapshot),
+        commentSnapshot: null,
+        error: 'Error removing comment'
       };
     default:
       return state;
