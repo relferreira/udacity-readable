@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import glamorous from 'glamorous';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import { showSnack } from 'react-redux-snackbar';
 
 import { listCategories, listPosts, listCategoryPosts } from './actions';
 import { votePost, deletePost } from '../post/actions';
@@ -63,7 +64,15 @@ class Home extends Component {
 
   handleVote = (id, option) => this.props.votePost(id, option);
 
-  handlePostDelete = id => this.props.deletePost(id);
+  handlePostDelete = id =>
+    this.props
+      .deletePost(id)
+      .then(() =>
+        this.props.showSnack('posts', {
+          label: 'Post deleted with success',
+          timeout: 4000
+        })
+      );
 
   handleNewPostClick = () => this.props.history.push('/none/new/edit');
 
@@ -124,7 +133,8 @@ const mapDispatchToProps = {
   listPosts,
   listCategoryPosts,
   votePost,
-  deletePost
+  deletePost,
+  showSnack
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
