@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as uuidv1 from 'uuid/v1';
 import glamorous from 'glamorous';
 import Select from 'react-select';
+import { showSnack } from 'react-redux-snackbar';
 
 import { listCategories } from '../home/actions';
 import { loadPostInfo } from '../post/actions';
@@ -72,7 +73,13 @@ class EditPost extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const redirectToHome = () => this.props.history.push('/');
+    const redirectToHome = type => {
+      this.props.showSnack('edit_post', {
+        label: `Post ${type} with success!`,
+        timeout: 5000
+      });
+      this.props.history.push('/');
+    };
     //creating
     if (!this.state.id) {
       let requestBody = {
@@ -81,10 +88,12 @@ class EditPost extends Component {
         timestamp: Date.now(),
         author: 'Renan'
       };
-      this.props.createPost(requestBody).then(redirectToHome);
+      this.props.createPost(requestBody).then(() => redirectToHome('created'));
     } else {
       const { id, title, body } = this.state;
-      this.props.updatePost(id, title, body).then(redirectToHome);
+      this.props
+        .updatePost(id, title, body)
+        .then(() => redirectToHome('edited'));
     }
   };
 
@@ -151,7 +160,8 @@ const mapDispatchToProps = {
   listCategories,
   loadPostInfo,
   createPost,
-  updatePost
+  updatePost,
+  showSnack
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPost);

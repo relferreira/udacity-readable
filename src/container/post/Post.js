@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { showSnack } from 'react-redux-snackbar';
 import * as uuidv1 from 'uuid/v1';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import glamorous, { Div, Form } from 'glamorous';
@@ -64,7 +65,10 @@ class Post extends Component {
   handleOrderByChange = event => this.setState({ orderBy: event.value });
 
   handleDelete = id => {
-    this.props.deletePost(id).then(() => this.props.history.replace('/'));
+    this.props.deletePost(id).then(() => {
+      this.showSnack('Post deleted with success!');
+      this.props.history.replace('/');
+    });
   };
 
   handleNewCommentChange = event =>
@@ -83,21 +87,29 @@ class Post extends Component {
     };
     this.props.createComment(newComment).then(() => {
       this.setState({ newComment: '' });
+      this.showSnack('Comment created with success!');
     });
   };
 
   handleCommentEdit = (id, body) => {
     let timestamp = Date.now();
-    this.props.editComment(id, timestamp, body);
+    this.props
+      .editComment(id, timestamp, body)
+      .then(() => this.showSnack('Comment edited with success!'));
   };
 
   handleCommentDelete = id => {
-    this.props.deleteComment(id);
+    this.props
+      .deleteComment(id)
+      .then(() => this.showSnack('Comment deleted with success!'));
   };
 
   handleVote = (id, option) => this.props.votePost(id, option);
 
   handleCommentVote = (id, option) => this.props.voteComment(id, option);
+
+  showSnack = message =>
+    this.props.showSnack('posts', { label: message, timeout: 7000 });
 
   render() {
     const { post, comments, loading, loadingComments } = this.props.data;
@@ -199,7 +211,8 @@ const mapDispatchToProps = {
   editComment,
   deleteComment,
   votePost,
-  voteComment
+  voteComment,
+  showSnack
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
